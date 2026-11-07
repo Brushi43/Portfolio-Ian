@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="about.css">
 </head>
 <body data-page="about">
 
@@ -23,19 +24,51 @@
 
 <main class="page">
 <section id="about">
-  <div class="wrap about">
-    <div>
-      <h2 data-i18n="h2_about">About</h2>
-      <p data-i18n="about1">I'm Ian Aviñó, a digital artist focused on 3D modeling and game development.</p>
-      <p data-i18n="about2">I build my own models and turn them into playable demos and small games. I love inventing fictional worlds and bringing them to life, from the first sketch to something you can explore.</p>
+  <div class="wrap">
+
+    <div class="about-top">
+      <div class="about-text">
+        <h2 data-i18n="h2_about">About</h2>
+        <p data-i18n="about1">I'm Ian Aviñó, a digital artist focused on 3D modeling and game development.</p>
+        <p data-i18n="about2">I build my own models and turn them into playable demos and small games.</p>
+        <p data-i18n="about3">I love inventing fictional worlds.</p>
+        <p data-i18n="about4">I'm looking for a role as a 3D modeler or game developer.</p>
+        <a class="cv-btn" id="cv" href="media/CV-Ian-Avino-EN.pdf" download data-i18n="cv_btn">Download CV</a>
+      </div>
+      <div class="portrait-col">
+        <div class="avatar portrait" id="avatar"></div>
+      </div>
     </div>
-    <div>
-      <div class="avatar" id="avatar"></div>
+
+    <div class="about-block">
+      <h2 class="sub-h2" data-i18n="h2_path">Background</h2>
+      <ol class="timeline" id="timeline"></ol>
     </div>
-    <div class="tools-row">
-      <h2 data-i18n="h2_tools">Tools</h2>
-      <ul class="tools"><li>Blender</li><li>Photoshop</li><li>Unity</li><li>Unreal Engine</li></ul>
+
+    <div class="about-block">
+      <h2 class="sub-h2" data-i18n="h2_tools">Tools</h2>
+      <div class="tool-groups">
+        <div>
+          <h3 class="tool-label" data-i18n="tg_model">Modeling &amp; texturing</h3>
+          <ul class="tools"><li>Blender</li><li>Photoshop</li></ul>
+        </div>
+        <div>
+          <h3 class="tool-label" data-i18n="tg_engines">Game engines</h3>
+          <ul class="tools"><li>Unity</li><li>Unreal Engine 5</li><li>GDevelop</li></ul>
+        </div>
+      </div>
     </div>
+
+    <div class="about-block">
+      <h2 class="sub-h2" data-i18n="h2_langs">Languages</h2>
+      <ul class="tools">
+        <li data-i18n="lg_ca">Catalan: native</li>
+        <li data-i18n="lg_es">Spanish: native</li>
+        <li data-i18n="lg_en">English: B2</li>
+        <li data-i18n="lg_fr">French: B1</li>
+      </ul>
+    </div>
+
   </div>
 </section>
 </main>
@@ -51,5 +84,6 @@
 </footer>
 
 <script src="main.js"></script>
+<script src="about.js"></script>
 </body>
 </html>
