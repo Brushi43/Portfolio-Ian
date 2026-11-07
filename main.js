@@ -7,7 +7,7 @@
    Missing photos show a placeholder.
    Texts of the rest of the site: see the UI object below. */
 const projects3d = [
- {slug:"unreal-journey",title:"Unreal Journey",
+ {slug:"unreal-journey",title:"Unreal Journey", yt:"https://youtu.be/9wh7et9AHBc",
   meta:{en:"Sci-fi short film · Environments & final video · Unreal Engine",
         es:"Cortometraje de ciencia ficción · Entornos y vídeo final · Unreal Engine"},
   d:{en:"A sci-fi short film about a space traveler who surveys three locations on Earth, a forest, an island and a desert, before choosing where to land. I built the environments and produced the final video in Unreal Engine.",
@@ -34,12 +34,12 @@ const projectsGames = [
         es:"Videojuego en primera persona para PC · Programación · Unreal Engine"},
   d:{en:"A first-person PC experience in which the player travels through different worlds collecting colored prisms to restore the aurora borealis to the sky. I was responsible for the gameplay programming, developed in Unreal Engine.",
      es:"Experiencia en primera persona para PC en la que el jugador viaja por distintos mundos recogiendo prismas de colores para devolver la aurora boreal al cielo. Me encargué de la programación de la jugabilidad, desarrollada en Unreal Engine."}},
- {slug:"ghosts-whispers",title:"Ghosts' Whispers",
+ {slug:"ghosts-whispers",title:"Ghosts' Whispers", yt:"https://youtu.be/ysrodL3rvYE",
   meta:{en:"Pixel art mystery & puzzle game · Programming · GDevelop",
         es:"Juego de misterio y puzles en pixel art · Programación · GDevelop"},
   d:{en:"A pixel art mystery game built around puzzle solving, developed in GDevelop. I programmed all the mechanics and integrated the narrative and art assets provided by the team.",
      es:"Juego de misterio en pixel art centrado en la resolución de puzles, desarrollado en GDevelop. Programé todas las mecánicas e integré los recursos narrativos y artísticos aportados por el equipo."}},
- {slug:"land-between-rivers",title:"Land Between Rivers",
+ {slug:"land-between-rivers",title:"Land Between Rivers", yt:"https://youtu.be/6xman6HmrGE",
   meta:{en:"Third-person exploration & puzzle demo · Modeling & development · Unity",
         es:"Demo de exploración y puzles en tercera persona · Modelado y desarrollo · Unity"},
   d:{en:"A third-person exploration and puzzle demo set in an archaeological museum dedicated to Mesopotamia, where the player examines the exhibits and solves puzzles. I modeled every object and developed the full demo in Unity.",
@@ -61,7 +61,11 @@ const UI = {
   about1:"I'm Ian Aviñó, a digital artist focused on 3D modeling and game development.",
   about2:"I build my own models and turn them into playable demos and small games. I love inventing fictional worlds and bringing them to life, from the first sketch to something you can explore.",
   h2_tools:"Tools", h2_contact:"Contact",
-  contact_p:"Want to work together or just say hi? Write to me."
+  contact_p:"Want to work together or just say hi? Write to me.",
+  c_email:"Email", yt_label:"Watch on YouTube",
+  f_name:"Name", f_email:"Email", f_msg:"Message", f_send:"Send message", f_sending:"Sending…",
+  f_ok:"Thanks! Your message has been sent. I'll get back to you soon.",
+  f_err:"The message couldn't be sent. Please try again or write to me at ianavinosoler@gmail.com."
  },
  es:{
   title_home:"Ian Aviñó | Artista 3D y Game Developer", title_portfolio:"Portfolio | Ian Aviñó", title_about:"Sobre mí | Ian Aviñó", title_contact:"Contacto | Ian Aviñó",
@@ -77,7 +81,11 @@ const UI = {
   about1:"Soy Ian Aviñó, artista digital especializado en modelado 3D y desarrollo de videojuegos.",
   about2:"Creo mis propios modelos y los convierto en demos jugables y pequeños juegos. Me encanta inventar mundos ficticios y darles vida, desde el primer boceto hasta algo que se puede explorar.",
   h2_tools:"Herramientas", h2_contact:"Contacto",
-  contact_p:"¿Quieres trabajar conmigo o simplemente saludar? Escríbeme."
+  contact_p:"¿Quieres trabajar conmigo o simplemente saludar? Escríbeme.",
+  c_email:"Correo", yt_label:"Ver en YouTube",
+  f_name:"Nombre", f_email:"Correo electrónico", f_msg:"Mensaje", f_send:"Enviar mensaje", f_sending:"Enviando…",
+  f_ok:"¡Gracias! Tu mensaje se ha enviado. Te responderé lo antes posible.",
+  f_err:"No se ha podido enviar el mensaje. Inténtalo de nuevo o escríbeme a ianavinosoler@gmail.com."
  }
 };
 
@@ -97,24 +105,67 @@ function slot(cls,base,label){
 }
 
 /* Language: functions that refresh each translated text */
+const CONTACT_EMAIL='ianavinosoler@gmail.com';
+let curLang='en';
 const binds=[];
-function render(list,host,groupKey){
-  const h=document.createElement('h3'); h.className='group'; host.appendChild(h);
-  binds.push(l=>{h.textContent=UI[l][groupKey];});
-  list.forEach(p=>{
-    const art=document.createElement('article'); art.className='project';
-    const g=document.createElement('div'); g.className='gal';
-    g.appendChild(slot('big',`media/${p.slug}-1`,`Add media/${p.slug}-1`));
-    for(let n=2;n<=3;n++) g.appendChild(slot('',`media/${p.slug}-${n}`,`Add media/${p.slug}-${n}`));
-    const t=document.createElement('h4'); t.textContent=p.title;
-    const m=document.createElement('p'); m.className='meta';
-    const d=document.createElement('p'); d.className='d';
-    binds.push(l=>{m.textContent=p.meta[l]; d.textContent=p.d[l];});
-    art.append(g,t,m,d); host.appendChild(art);
+
+function buildProject(p){
+  const art=document.createElement('article'); art.className='project';
+  const g=document.createElement('div'); g.className='gal';
+  const big=slot('big',`media/${p.slug}-1`,`Add media/${p.slug}-1`);
+  g.appendChild(big);
+  for(let n=2;n<=3;n++) g.appendChild(slot('',`media/${p.slug}-${n}`,`Add media/${p.slug}-${n}`));
+  if(p.yt){
+    const box=document.createElement('div'); box.className='ytbox';
+    const a=document.createElement('a'); a.href=p.yt; a.target='_blank'; a.rel='noopener';
+    const im=document.createElement('img'); im.src='media/youtube.png'; im.alt=''; im.width=43; im.height=30;
+    a.appendChild(im); box.appendChild(a); big.appendChild(box);
+    binds.push(l=>{ const s=UI[l].yt_label+': '+p.title; a.setAttribute('aria-label',s); a.title=s; });
+  }
+  const t=document.createElement('h4'); t.textContent=p.title;
+  const m=document.createElement('p'); m.className='meta';
+  const d=document.createElement('p'); d.className='d';
+  binds.push(l=>{ m.textContent=p.meta[l]; d.textContent=p.d[l]; });
+  art.append(g,t,m,d);
+  return art;
+}
+
+/* Dropdowns by project type: opening one closes the other */
+const GROUPS=[{key:'g3d',list:projects3d},{key:'ggames',list:projectsGames}];
+function buildAccordion(host){
+  const items=[];
+  GROUPS.forEach((gr,i)=>{
+    const item=document.createElement('div'); item.className='acc';
+    const h=document.createElement('h3'); h.className='group';
+    const btn=document.createElement('button'); btn.type='button'; btn.className='acc-btn';
+    btn.id='acc-btn-'+i; btn.setAttribute('aria-controls','acc-panel-'+i);
+    const label=document.createElement('span');
+    const chev=document.createElement('span'); chev.className='chev'; chev.setAttribute('aria-hidden','true');
+    btn.append(label,chev); h.appendChild(btn);
+    const panel=document.createElement('div'); panel.className='acc-panel';
+    panel.id='acc-panel-'+i; panel.setAttribute('role','region'); panel.setAttribute('aria-labelledby',btn.id);
+    const inner=document.createElement('div'); inner.className='acc-inner';
+    const body=document.createElement('div'); body.className='acc-body';
+    gr.list.forEach(p=>body.appendChild(buildProject(p)));
+    inner.appendChild(body); panel.appendChild(inner);
+    item.append(h,panel); host.appendChild(item);
+    binds.push(l=>{ label.textContent=UI[l][gr.key]; });
+    items.push({item,btn,panel});
   });
+  function setOpen(idx){
+    items.forEach((o,j)=>{
+      const open=j===idx;
+      o.item.classList.toggle('open',open);
+      o.btn.setAttribute('aria-expanded',String(open));
+      o.panel.inert=!open;
+    });
+  }
+  items.forEach((o,j)=>o.btn.addEventListener('click',()=>setOpen(o.item.classList.contains('open')?-1:j)));
+  setOpen(0);
 }
 
 function applyLang(l,save){
+  curLang=l;
   if(save){ try{localStorage.setItem('lang',l);}catch(e){} }
   const u=UI[l];
   document.documentElement.lang=l;
@@ -130,15 +181,51 @@ function initialLang(){
   return (navigator.language||'en').toLowerCase().startsWith('es') ? 'es' : 'en';
 }
 
+/* Contact form (sent through FormSubmit to CONTACT_EMAIL) */
+function setupForm(){
+  const form=document.getElementById('cform');
+  if(!form) return;
+  const st=document.getElementById('cstatus');
+  const btn=form.querySelector('.send');
+  function say(key){
+    st.dataset.k=key||'';
+    st.className='status'+(key?(key==='f_ok'?' ok':' err'):'');
+    st.textContent=key?UI[curLang][key]:'';
+  }
+  binds.push(l=>{ if(st.dataset.k) st.textContent=UI[l][st.dataset.k]; });
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    if(form.elements['_honey'].value){ say('f_ok'); form.reset(); return; }   /* spam trap */
+    btn.disabled=true; btn.textContent=UI[curLang].f_sending; say('');
+    try{
+      const r=await fetch('https://formsubmit.co/ajax/'+CONTACT_EMAIL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({
+          name:form.elements['name'].value,
+          email:form.elements['email'].value,
+          message:form.elements['message'].value,
+          _subject:'New message from your portfolio',
+          _template:'table',
+          _captcha:'false'
+        })
+      });
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok||data.success===false||data.success==='false') throw new Error('send failed');
+      say('f_ok'); form.reset();
+    }catch(err){ say('f_err'); }
+    btn.disabled=false; btn.textContent=UI[curLang].f_send;
+  });
+}
+
 /* Build only what the current page has */
 const av=document.getElementById('avatar');
 if(av){
   const ph=document.createElement('div'); ph.className='ph'; ph.textContent='Add media/ian';
   av.appendChild(ph); loadImg('media/ian',ph,av);
 }
-const p3d=document.getElementById('p3d');
-if(p3d) render(projects3d,p3d,'g3d');
-const pg=document.getElementById('pgames');
-if(pg) render(projectsGames,pg,'ggames');
+const proj=document.getElementById('projects');
+if(proj) buildAccordion(proj);
+setupForm();
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang,true)));
 applyLang(initialLang(),false);
