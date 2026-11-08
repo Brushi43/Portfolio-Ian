@@ -1,18 +1,19 @@
 /* ===== EDIT YOUR TEXTS AND PROJECTS HERE =====
    Every text has an English (en) and a Spanish (es) version.
-   Photos: put files in /media named  <slug>-1, <slug>-2, <slug>-3
+   Photos: put files in /media named  <slug>-1, <slug>-2, <slug>-3 ... <slug>-N
    with any extension: .jpg  .jpeg  .png  .webp  (lowercase).
-   Photo 1 is the big one, photos 2 and 3 the small ones.
+   Photo 1 is the big one, photos 2 and 3 the small ones; the rest open in the viewer.
+   Set  n:N  in the project when it has more than 3 photos (default 3).
    About photo (circular): media/ian.jpg (or .jpeg / .png / .webp)
    Missing photos show a placeholder.
    Texts of the rest of the site: see the UI object below. */
 const projects3d = [
- {slug:"unreal-journey",title:"Unreal Journey", yt:"https://youtu.be/9wh7et9AHBc",
+ {slug:"unreal-journey",n:5,title:"Unreal Journey", yt:"https://youtu.be/9wh7et9AHBc",
   meta:{en:"Sci-fi short film · Environments & final video · Unreal Engine",
         es:"Cortometraje de ciencia ficción · Entornos y vídeo final · Unreal Engine"},
   d:{en:"A sci-fi short film about a space traveler who surveys three locations on Earth, a forest, an island and a desert, before choosing where to land. I built the environments and produced the final video in Unreal Engine.",
      es:"Cortometraje de ciencia ficción sobre un viajero espacial que explora tres lugares de la Tierra, un bosque, una isla y un desierto, antes de elegir dónde aterrizar. Construí los entornos y produje el vídeo final en Unreal Engine."}},
- {slug:"gaming-dog",title:"Gaming Dog",
+ {slug:"gaming-dog",n:7,title:"Gaming Dog",
   meta:{en:"Low-poly cartoon scene · Modeling & texturing · Blender",
         es:"Escena cartoon low-poly · Modelado y texturizado · Blender"},
   d:{en:"A low-poly cartoon scene showing a dog playing video games in his bedroom. The project covers the full asset workflow, from modeling to texturing, developed entirely in Blender.",
@@ -22,7 +23,7 @@ const projects3d = [
         es:"Videojuego tower defense · Modelos 3D, entorno y animación · Blender"},
   d:{en:"A tower defense game set on a circular map, where waves of moles emerge from the center and advance toward the outer barrier. Players must position their defenses strategically to stop them. I created the 3D models, built the environment and animated the characters in Blender.",
      es:"Videojuego tower defense ambientado en un mapa circular, donde oleadas de topos emergen del centro y avanzan hacia la barrera exterior. El jugador debe colocar sus defensas de forma estratégica para detenerlos. Creé los modelos 3D, construí el entorno y animé los personajes en Blender."}},
- {slug:"murder-by-death",title:"Murder By Death",
+ {slug:"murder-by-death",n:5,title:"Murder By Death",
   meta:{en:"Mystery game, released on Steam · 3D models · Blender",
         es:"Juego de misterio, publicado en Steam · Modelos 3D · Blender"},
   d:{en:"A murder mystery set in 1930s England and released on Steam. Players investigate a crime in a mansion, question suspects and make key decisions to uncover the truth before Scotland Yard arrives. I created the 3D models using Blender.",
@@ -48,8 +49,9 @@ const projectsGames = [
 
 const UI = {
  en:{
+  lb_close:"Close", lb_prev:"Previous image", lb_next:"Next image", lb_open:"Enlarge image", lb_more:"more photos",
   title_home:"Ian Aviñó | 3D Artist & Game Developer", title_portfolio:"Portfolio: 3D Art & Game Projects | Ian Aviñó", title_about:"About Ian Aviñó | 3D Artist & Game Developer", title_contact:"Contact Ian Aviñó | 3D Artist & Game Developer",
-  desc_home:"Ian Aviñó is a 3D artist and game developer from Catalonia. Explore his 3D art, environments and games built in Blender, Unity and Unreal Engine.", desc_portfolio:"Portfolio of Ian Aviñó: 3D art and environments made in Blender and Unreal Engine, and games developed in Unity, Unreal Engine 5 and GDevelop, including Murder by Death on Steam.", desc_about:"About Ian Aviñó, a digital artist studying Digital Arts at La Salle in Barcelona. 3D modeling in Blender, game development in Unity and Unreal Engine 5.", desc_contact:"Get in touch with Ian Aviñó, 3D artist and game developer, for collaborations or job opportunities.",
+  desc_home:"Ian Aviñó is a 3D artist and game developer from Catalonia. Explore his 3D art, environments and games built in Blender, Unity and Unreal Engine.", desc_portfolio:"Portfolio of Ian Aviñó: 3D art and environments made in Blender and Unreal Engine, and games developed in Unity, Unreal Engine 5 and GDevelop, including Murder by Death on Steam.", desc_about:"About Ian Aviñó, a digital artist with a degree in Digital Arts from La Salle in Barcelona. 3D modeling in Blender, game development in Unity and Unreal Engine 5.", desc_contact:"Get in touch with Ian Aviñó, 3D artist and game developer, for collaborations or job opportunities.",
   brand:"Ian Aviñó | 3D Artist & Game Developer",
   nav_home:"Home", nav_portfolio:"Portfolio", nav_about:"About", nav_contact:"Contact",
   h1:"Building worlds. Bringing them to life.",
@@ -68,8 +70,9 @@ const UI = {
   f_err:"The message couldn't be sent. Please try again or write to me at ianavinosoler@gmail.com."
  },
  es:{
+  lb_close:"Cerrar", lb_prev:"Imagen anterior", lb_next:"Imagen siguiente", lb_open:"Ampliar imagen", lb_more:"fotos más",
   title_home:"Ian Aviñó | Artista 3D y Game Developer", title_portfolio:"Portfolio: arte 3D y proyectos de videojuegos | Ian Aviñó", title_about:"Sobre Ian Aviñó | Artista 3D y Game Developer", title_contact:"Contacto con Ian Aviñó | Artista 3D y Game Developer",
-  desc_home:"Ian Aviñó es artista 3D y game developer de Cataluña. Descubre su arte 3D, entornos y juegos creados con Blender, Unity y Unreal Engine.", desc_portfolio:"Portfolio de Ian Aviñó: arte 3D y entornos hechos en Blender y Unreal Engine, y videojuegos desarrollados en Unity, Unreal Engine 5 y GDevelop, entre ellos Murder by Death en Steam.", desc_about:"Sobre Ian Aviñó, artista digital que estudia Artes Digitales en La Salle, Barcelona. Modelado 3D en Blender y desarrollo de videojuegos en Unity y Unreal Engine 5.", desc_contact:"Contacta con Ian Aviñó, artista 3D y game developer, para colaboraciones u ofertas de trabajo.",
+  desc_home:"Ian Aviñó es artista 3D y game developer de Cataluña. Descubre su arte 3D, entornos y juegos creados con Blender, Unity y Unreal Engine.", desc_portfolio:"Portfolio de Ian Aviñó: arte 3D y entornos hechos en Blender y Unreal Engine, y videojuegos desarrollados en Unity, Unreal Engine 5 y GDevelop, entre ellos Murder by Death en Steam.", desc_about:"Sobre Ian Aviñó, artista digital graduado en Artes Digitales por La Salle, Barcelona. Modelado 3D en Blender y desarrollo de videojuegos en Unity y Unreal Engine 5.", desc_contact:"Contacta con Ian Aviñó, artista 3D y game developer, para colaboraciones u ofertas de trabajo.",
   brand:"Ian Aviñó | Artista 3D y Game Developer",
   nav_home:"Inicio", nav_portfolio:"Portfolio", nav_about:"Sobre mí", nav_contact:"Contacto",
   h1:"Construyendo mundos. Dándoles vida.",
@@ -109,13 +112,109 @@ const CONTACT_EMAIL='ianavinosoler@gmail.com';
 let curLang='en';
 const binds=[];
 
+/* Image viewer: click a photo to enlarge it; arrows, keyboard and swipe move between the project's photos */
+const Lightbox=(function(){
+  const cache={};
+  let root,img,cap,btnClose,btnPrev,btnNext;
+  let list=[],alts=[],title='',idx=0,opener=null,sx=null;
+  function resolve(base){
+    if(!cache[base]) cache[base]=new Promise(res=>{
+      let i=0; const t=new Image();
+      t.onload=()=>res(t.src);
+      t.onerror=()=>{ i++; if(i<EXTS.length) t.src=base+'.'+EXTS[i]; else res(null); };
+      t.src=base+'.'+EXTS[0];
+    });
+    return cache[base];
+  }
+  async function show(i){
+    const n=list.length; idx=((i%n)+n)%n;
+    const base=list[idx];
+    root.classList.add('loading');
+    const src=await resolve(base);
+    if(root.hidden||base!==list[idx]) return;
+    if(src){ img.src=src; img.alt=alts[idx]; }
+    cap.textContent=title+'  ·  '+(idx+1)+' / '+n;
+    root.classList.remove('loading');
+    btnPrev.hidden=btnNext.hidden=n<2;
+    if(n>1){ resolve(list[(idx+1)%n]); resolve(list[(idx-1+n)%n]); }
+  }
+  function open(bases,altList,t,i,from){
+    list=bases; alts=altList; title=t; opener=from;
+    root.hidden=false; document.documentElement.style.overflow='hidden';
+    show(i); btnClose.focus();
+  }
+  function close(){
+    if(root.hidden) return;
+    root.hidden=true; img.removeAttribute('src');
+    document.documentElement.style.overflow='';
+    if(opener&&opener.focus) opener.focus();
+  }
+  function build(){
+    root=document.createElement('div'); root.className='lb'; root.hidden=true;
+    root.setAttribute('role','dialog'); root.setAttribute('aria-modal','true');
+    btnClose=document.createElement('button'); btnClose.type='button'; btnClose.className='lb-close';
+    btnPrev=document.createElement('button'); btnPrev.type='button'; btnPrev.className='lb-nav lb-prev';
+    btnNext=document.createElement('button'); btnNext.type='button'; btnNext.className='lb-nav lb-next';
+    const fig=document.createElement('figure'); fig.className='lb-fig';
+    img=document.createElement('img'); img.className='lb-img'; img.alt='';
+    cap=document.createElement('figcaption'); cap.className='lb-cap';
+    fig.append(img,cap); root.append(btnClose,btnPrev,btnNext,fig); document.body.appendChild(root);
+    btnClose.addEventListener('click',close);
+    btnPrev.addEventListener('click',()=>show(idx-1));
+    btnNext.addEventListener('click',()=>show(idx+1));
+    root.addEventListener('click',e=>{ if(e.target===root||e.target===fig) close(); });
+    root.addEventListener('touchstart',e=>{ sx=e.touches[0].clientX; },{passive:true});
+    root.addEventListener('touchend',e=>{
+      if(sx===null||list.length<2) return;
+      const dx=e.changedTouches[0].clientX-sx; sx=null;
+      if(Math.abs(dx)>50) show(idx+(dx<0?1:-1));
+    });
+    document.addEventListener('keydown',e=>{
+      if(root.hidden) return;
+      if(e.key==='Escape') close();
+      else if(e.key==='ArrowLeft'&&list.length>1) show(idx-1);
+      else if(e.key==='ArrowRight'&&list.length>1) show(idx+1);
+      else if(e.key==='Tab'){
+        const f=[btnClose,btnPrev,btnNext].filter(b=>!b.hidden);
+        const k=f.indexOf(document.activeElement);
+        e.preventDefault();
+        f[(k+(e.shiftKey?-1:1)+f.length)%f.length].focus();
+      }
+    });
+    binds.push(l=>{
+      const u=UI[l];
+      btnClose.setAttribute('aria-label',u.lb_close);
+      btnPrev.setAttribute('aria-label',u.lb_prev);
+      btnNext.setAttribute('aria-label',u.lb_next);
+    });
+  }
+  return {build,open};
+})();
+
 function buildProject(p){
+  const N=p.n||3;
+  const bases=Array.from({length:N},(_,k)=>`media/${p.slug}-${k+1}`);
+  const alts=bases.map((_,k)=>`${p.title}: ${p.meta.en.split(' · ')[0]} (image ${k+1} of ${N})`);
   const art=document.createElement('article'); art.className='project';
   const g=document.createElement('div'); g.className='gal';
-  const altOf=n=>`${p.title}: ${p.meta.en.split(' · ')[0]} (image ${n} of 3)`;
-  const big=slot('big',`media/${p.slug}-1`,`Add media/${p.slug}-1`,altOf(1));
-  g.appendChild(big);
-  for(let n=2;n<=3;n++) g.appendChild(slot('',`media/${p.slug}-${n}`,`Add media/${p.slug}-${n}`,altOf(n)));
+  const slots=[];
+  for(let k=0;k<Math.min(N,3);k++){
+    const s=slot(k===0?'big':'',bases[k],`Add ${bases[k]}`,alts[k]);
+    s.classList.add('zoom');
+    if(k===2&&N>3){
+      const more=document.createElement('div'); more.className='more'; more.setAttribute('aria-hidden','true');
+      more.textContent='+'+(N-3); s.appendChild(more);
+    }
+    const zb=document.createElement('button'); zb.type='button'; zb.className='zoom-btn';
+    zb.addEventListener('click',()=>Lightbox.open(bases,alts,p.title,k,zb));
+    s.appendChild(zb);
+    binds.push(l=>{
+      const extra=(k===2&&N>3)?', +'+(N-3)+' '+UI[l].lb_more:'';
+      zb.setAttribute('aria-label',UI[l].lb_open+': '+p.title+' ('+(k+1)+'/'+N+')'+extra);
+    });
+    g.appendChild(s); slots.push(s);
+  }
+  const big=slots[0];
   if(p.yt){
     const box=document.createElement('div'); box.className='ytbox';
     const a=document.createElement('a'); a.href=p.yt; a.target='_blank'; a.rel='noopener';
@@ -124,10 +223,10 @@ function buildProject(p){
     binds.push(l=>{ const s=UI[l].yt_label+': '+p.title; a.setAttribute('aria-label',s); a.title=s; });
   }
   const t=document.createElement('h4'); t.textContent=p.title;
-  const m=document.createElement('p'); m.className='meta';
+  const mt=document.createElement('p'); mt.className='meta';
   const d=document.createElement('p'); d.className='d';
-  binds.push(l=>{ m.textContent=p.meta[l]; d.textContent=p.d[l]; });
-  art.append(g,t,m,d);
+  binds.push(l=>{ mt.textContent=p.meta[l]; d.textContent=p.d[l]; });
+  art.append(g,t,mt,d);
   return art;
 }
 
@@ -226,6 +325,7 @@ if(av){
   av.appendChild(ph); loadImg('media/ian',ph,av,'Ian Aviñó, 3D artist and game developer');
 }
 const proj=document.getElementById('projects');
+Lightbox.build();
 if(proj){ proj.textContent=''; buildAccordion(proj); }
 setupForm();
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang,true)));

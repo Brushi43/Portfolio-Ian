@@ -8,7 +8,7 @@ const CV_FILES = {
 };
 
 const timeline = [
- {now:true, date:{en:"2022 – Present", es:"2022 – Actualidad"},
+ {date:{en:"2022 – 2026", es:"2022 – 2026"},
   title:{en:"La Salle, Barcelona", es:"La Salle, Barcelona"},
   d:{en:"Bachelor's Degree in Digital Arts.",
      es:"Grado en Artes Digitales."}},
@@ -35,7 +35,7 @@ const timeline = [
 ];
 
 Object.assign(UI.en,{
-  about1:"I'm Ian Aviñó, a digital artist focused on 3D modeling and game development. I live in Catalonia and I'm studying Digital Arts at La Salle in Barcelona.",
+  about1:"I'm Ian Aviñó, a digital artist focused on 3D modeling and game development. I live in Catalonia and I graduated in Digital Arts from La Salle in Barcelona in 2026.",
   about2:"I build my own models and turn them into playable demos and small games. I model and texture in Blender and Photoshop, then bring everything to life in Unity, Unreal Engine 5 or GDevelop, programming the mechanics myself.",
   about3:"I love inventing fictional worlds and bringing them to life, from the first sketch to something you can explore.",
   about4:"I'm looking for a role as a 3D modeler and as a game developer, ideally somewhere I can do both.",
@@ -46,7 +46,7 @@ Object.assign(UI.en,{
   about_h1:"I invent worlds, then I make them playable."
 });
 Object.assign(UI.es,{
-  about1:"Soy Ian Aviñó, artista digital especializado en modelado 3D y desarrollo de videojuegos. Vivo en Cataluña y estudio Artes Digitales en La Salle, Barcelona.",
+  about1:"Soy Ian Aviñó, artista digital especializado en modelado 3D y desarrollo de videojuegos. Vivo en Cataluña y me gradué en Artes Digitales en La Salle, Barcelona, en 2026.",
   about2:"Creo mis propios modelos y los convierto en demos jugables y pequeños juegos. Modelo y texturizo en Blender y Photoshop, y luego lo llevo todo a la vida en Unity, Unreal Engine 5 o GDevelop, programando yo mismo las mecánicas.",
   about3:"Me encanta inventar mundos ficticios y darles vida, desde el primer boceto hasta algo que se puede explorar.",
   about4:"Busco un puesto como modelador 3D y como desarrollador de videojuegos, idealmente un lugar donde pueda hacer ambas cosas.",
