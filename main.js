@@ -48,8 +48,8 @@ const projectsGames = [
 
 const UI = {
  en:{
-  title_home:"Ian Aviñó | 3D Artist & Game Developer", title_portfolio:"Portfolio | Ian Aviñó", title_about:"About | Ian Aviñó", title_contact:"Contact | Ian Aviñó",
-  desc:"Portfolio of Ian Aviñó, 3D artist and game developer. Building worlds, bringing them to life.",
+  title_home:"Ian Aviñó | 3D Artist & Game Developer", title_portfolio:"Portfolio: 3D Art & Game Projects | Ian Aviñó", title_about:"About Ian Aviñó | 3D Artist & Game Developer", title_contact:"Contact Ian Aviñó | 3D Artist & Game Developer",
+  desc_home:"Ian Aviñó is a 3D artist and game developer from Catalonia. Explore his 3D art, environments and games built in Blender, Unity and Unreal Engine.", desc_portfolio:"Portfolio of Ian Aviñó: 3D art and environments made in Blender and Unreal Engine, and games developed in Unity, Unreal Engine 5 and GDevelop, including Murder by Death on Steam.", desc_about:"About Ian Aviñó, a digital artist studying Digital Arts at La Salle in Barcelona. 3D modeling in Blender, game development in Unity and Unreal Engine 5.", desc_contact:"Get in touch with Ian Aviñó, 3D artist and game developer, for collaborations or job opportunities.",
   brand:"Ian Aviñó | 3D Artist & Game Developer",
   nav_home:"Home", nav_portfolio:"Portfolio", nav_about:"About", nav_contact:"Contact",
   h1:"Building worlds. Bringing them to life.",
@@ -68,8 +68,8 @@ const UI = {
   f_err:"The message couldn't be sent. Please try again or write to me at ianavinosoler@gmail.com."
  },
  es:{
-  title_home:"Ian Aviñó | Artista 3D y Game Developer", title_portfolio:"Portfolio | Ian Aviñó", title_about:"Sobre mí | Ian Aviñó", title_contact:"Contacto | Ian Aviñó",
-  desc:"Portfolio de Ian Aviñó, artista 3D y game developer. Construyendo mundos y dándoles vida.",
+  title_home:"Ian Aviñó | Artista 3D y Game Developer", title_portfolio:"Portfolio: arte 3D y proyectos de videojuegos | Ian Aviñó", title_about:"Sobre Ian Aviñó | Artista 3D y Game Developer", title_contact:"Contacto con Ian Aviñó | Artista 3D y Game Developer",
+  desc_home:"Ian Aviñó es artista 3D y game developer de Cataluña. Descubre su arte 3D, entornos y juegos creados con Blender, Unity y Unreal Engine.", desc_portfolio:"Portfolio de Ian Aviñó: arte 3D y entornos hechos en Blender y Unreal Engine, y videojuegos desarrollados en Unity, Unreal Engine 5 y GDevelop, entre ellos Murder by Death en Steam.", desc_about:"Sobre Ian Aviñó, artista digital que estudia Artes Digitales en La Salle, Barcelona. Modelado 3D en Blender y desarrollo de videojuegos en Unity y Unreal Engine 5.", desc_contact:"Contacta con Ian Aviñó, artista 3D y game developer, para colaboraciones u ofertas de trabajo.",
   brand:"Ian Aviñó | Artista 3D y Game Developer",
   nav_home:"Inicio", nav_portfolio:"Portfolio", nav_about:"Sobre mí", nav_contact:"Contacto",
   h1:"Construyendo mundos. Dándoles vida.",
@@ -90,18 +90,18 @@ const UI = {
 };
 
 const EXTS=['jpg','jpeg','png','webp'];
-function loadImg(base,ph,host){
+function loadImg(base,ph,host,alt){
   const im=new Image(); let i=0;
-  im.alt=''; im.loading='lazy';
+  im.alt=alt||''; im.loading='lazy';
   im.onload=()=>ph.remove();
   im.onerror=()=>{ i++; if(i<EXTS.length) im.src=base+'.'+EXTS[i]; else im.remove(); };
   im.src=base+'.'+EXTS[0];
   host.appendChild(im);
 }
-function slot(cls,base,label){
+function slot(cls,base,label,alt){
   const s=document.createElement('div'); s.className='slot '+cls;
   const ph=document.createElement('div'); ph.className='ph'; ph.textContent=label; s.appendChild(ph);
-  loadImg(base,ph,s); return s;
+  loadImg(base,ph,s,alt); return s;
 }
 
 /* Language: functions that refresh each translated text */
@@ -112,9 +112,10 @@ const binds=[];
 function buildProject(p){
   const art=document.createElement('article'); art.className='project';
   const g=document.createElement('div'); g.className='gal';
-  const big=slot('big',`media/${p.slug}-1`,`Add media/${p.slug}-1`);
+  const altOf=n=>`${p.title}: ${p.meta.en.split(' · ')[0]} (image ${n} of 3)`;
+  const big=slot('big',`media/${p.slug}-1`,`Add media/${p.slug}-1`,altOf(1));
   g.appendChild(big);
-  for(let n=2;n<=3;n++) g.appendChild(slot('',`media/${p.slug}-${n}`,`Add media/${p.slug}-${n}`));
+  for(let n=2;n<=3;n++) g.appendChild(slot('',`media/${p.slug}-${n}`,`Add media/${p.slug}-${n}`,altOf(n)));
   if(p.yt){
     const box=document.createElement('div'); box.className='ytbox';
     const a=document.createElement('a'); a.href=p.yt; a.target='_blank'; a.rel='noopener';
@@ -171,7 +172,7 @@ function applyLang(l,save){
   document.documentElement.lang=l;
   document.title=u['title_'+(document.body.dataset.page||'home')];
   const md=document.querySelector('meta[name="description"]');
-  if(md) md.setAttribute('content',u.desc);
+  if(md) md.setAttribute('content',u['desc_'+(document.body.dataset.page||'home')]);
   document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent=u[el.dataset.i18n]; });
   binds.forEach(f=>f(l));
   document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===l)));
@@ -222,10 +223,10 @@ function setupForm(){
 const av=document.getElementById('avatar');
 if(av){
   const ph=document.createElement('div'); ph.className='ph'; ph.textContent='Add media/ian';
-  av.appendChild(ph); loadImg('media/ian',ph,av);
+  av.appendChild(ph); loadImg('media/ian',ph,av,'Ian Aviñó, 3D artist and game developer');
 }
 const proj=document.getElementById('projects');
-if(proj) buildAccordion(proj);
+if(proj){ proj.textContent=''; buildAccordion(proj); }
 setupForm();
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang,true)));
 applyLang(initialLang(),false);

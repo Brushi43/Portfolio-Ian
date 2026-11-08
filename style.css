@@ -38,7 +38,7 @@ nav a:hover{color:var(--gold)}
 
 
 section{padding:4rem 0 5rem}
-h2{font:800 clamp(1.7rem,3.6vw,2.8rem)/1.1 var(--display);text-transform:uppercase;margin-bottom:2rem}
+h2,h1.pt{font:800 clamp(1.7rem,3.6vw,2.8rem)/1.1 var(--display);text-transform:uppercase;margin-bottom:2rem}
 #projects{margin-top:3rem}
 
 /* Dropdowns: orange bars with black text */

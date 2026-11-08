@@ -60,6 +60,7 @@ Object.assign(UI.es,{
 (function(){
   const host=document.getElementById('timeline');
   if(host){
+    host.textContent='';
     timeline.forEach(it=>{
       const li=document.createElement('li'); li.className='tl-item'+(it.now?' now':'');
       const dt=document.createElement('p'); dt.className='tl-date';
