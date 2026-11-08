@@ -50,6 +50,9 @@ const projectsGames = [
 const UI = {
  en:{
   lb_close:"Close", lb_prev:"Previous image", lb_next:"Next image", lb_open:"Enlarge image", lb_more:"more photos",
+  copied:"Email copied!", sfx_on:"Interface sounds: on", sfx_off:"Interface sounds: off",
+  e_title:"GAME OVER", e_msg:"This page doesn't exist or has moved.", e_cont:"CONTINUE?", e_back:"Returning to the start automatically", e_btn:"Continue",
+  title_404:"Game Over | Ian Aviñó", desc_404:"Page not found.",
   title_home:"Ian Aviñó | 3D Artist & Game Developer", title_portfolio:"Portfolio: 3D Art & Game Projects | Ian Aviñó", title_about:"About Ian Aviñó | 3D Artist & Game Developer", title_contact:"Contact Ian Aviñó | 3D Artist & Game Developer",
   desc_home:"Ian Aviñó is a 3D artist and game developer from Catalonia. Explore his 3D art, environments and games built in Blender, Unity and Unreal Engine.", desc_portfolio:"Portfolio of Ian Aviñó: 3D art and environments made in Blender and Unreal Engine, and games developed in Unity, Unreal Engine 5 and GDevelop, including Murder by Death on Steam.", desc_about:"About Ian Aviñó, a digital artist with a degree in Digital Arts from La Salle in Barcelona. 3D modeling in Blender, game development in Unity and Unreal Engine 5.", desc_contact:"Get in touch with Ian Aviñó, 3D artist and game developer, for collaborations or job opportunities.",
   brand:"Ian Aviñó | 3D Artist & Game Developer",
@@ -71,6 +74,9 @@ const UI = {
  },
  es:{
   lb_close:"Cerrar", lb_prev:"Imagen anterior", lb_next:"Imagen siguiente", lb_open:"Ampliar imagen", lb_more:"fotos más",
+  copied:"¡Correo copiado!", sfx_on:"Sonidos de interfaz: activados", sfx_off:"Sonidos de interfaz: desactivados",
+  e_title:"GAME OVER", e_msg:"Esta página no existe o se ha movido.", e_cont:"¿CONTINUAR?", e_back:"Volviendo al inicio automáticamente", e_btn:"Continuar",
+  title_404:"Game Over | Ian Aviñó", desc_404:"Página no encontrada.",
   title_home:"Ian Aviñó | Artista 3D y Game Developer", title_portfolio:"Portfolio: arte 3D y proyectos de videojuegos | Ian Aviñó", title_about:"Sobre Ian Aviñó | Artista 3D y Game Developer", title_contact:"Contacto con Ian Aviñó | Artista 3D y Game Developer",
   desc_home:"Ian Aviñó es artista 3D y game developer de Cataluña. Descubre su arte 3D, entornos y juegos creados con Blender, Unity y Unreal Engine.", desc_portfolio:"Portfolio de Ian Aviñó: arte 3D y entornos hechos en Blender y Unreal Engine, y videojuegos desarrollados en Unity, Unreal Engine 5 y GDevelop, entre ellos Murder by Death en Steam.", desc_about:"Sobre Ian Aviñó, artista digital graduado en Artes Digitales por La Salle, Barcelona. Modelado 3D en Blender y desarrollo de videojuegos en Unity y Unreal Engine 5.", desc_contact:"Contacta con Ian Aviñó, artista 3D y game developer, para colaboraciones u ofertas de trabajo.",
   brand:"Ian Aviñó | Artista 3D y Game Developer",
@@ -97,7 +103,7 @@ function loadImg(base,ph,host,alt){
   const im=new Image(); let i=0;
   im.alt=alt||''; im.loading='lazy';
   im.onload=()=>ph.remove();
-  im.onerror=()=>{ i++; if(i<EXTS.length) im.src=base+'.'+EXTS[i]; else im.remove(); };
+  im.onerror=()=>{ i++; if(i<EXTS.length) im.src=base+'.'+EXTS[i]; else { im.remove(); ph.classList.add('missing'); } };
   im.src=base+'.'+EXTS[0];
   host.appendChild(im);
 }
@@ -326,6 +332,161 @@ if(av){
 }
 const proj=document.getElementById('projects');
 Lightbox.build();
+
+/* ===== Game-style extras =====
+   loading screen (first visit of a session), page wipe between pages, scroll bar, hero parallax,
+   custom cursor, copy-email toast, interface sounds (off by default), 404 countdown */
+(function(){
+  const d=document.documentElement;
+  const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FINE=matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const ss=(k,v)=>{ try{ if(v===null) sessionStorage.removeItem(k); else if(v===undefined) return sessionStorage.getItem(k); else sessionStorage.setItem(k,v); }catch(e){} return null; };
+
+  /* Loading screen: only the first page opened in a visit */
+  if(d.classList.contains('ls')){
+    ss('seen','1');
+    const t0=performance.now(); let finished=false;
+    const finish=()=>{
+      if(finished) return; finished=true;
+      d.classList.add('ls-out');
+      setTimeout(()=>d.classList.remove('ls','ls-out'),500);
+    };
+    const go=()=>setTimeout(finish,Math.max(0,1400-(performance.now()-t0)));
+    if(document.readyState==='complete') go(); else addEventListener('load',go,{once:true});
+    setTimeout(finish,3200);
+  }
+
+  /* Page wipe: slides over the screen before leaving and off it when the next page opens */
+  ss('wipe',null);
+  if(d.classList.contains('wipe-in')) setTimeout(()=>d.classList.remove('wipe-in'),700);
+  addEventListener('pageshow',e=>{ if(e.persisted) d.classList.remove('wipe-out'); });
+  document.addEventListener('click',e=>{
+    if(REDUCED||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return;
+    const a=e.target.closest&&e.target.closest('a[href]');
+    if(!a||(a.target&&a.target!=='_self')||a.hasAttribute('download')) return;
+    let u; try{ u=new URL(a.href,location.href); }catch(err){ return; }
+    if(u.origin!==location.origin||!/(\.html|\/)$/.test(u.pathname)) return;
+    if(u.pathname===location.pathname&&u.search===location.search) return;
+    e.preventDefault();
+    ss('wipe','1'); d.classList.add('wipe-out');
+    setTimeout(()=>{ location.href=a.href; },300);
+  });
+
+  /* Scroll progress bar */
+  const sp=document.createElement('div'); sp.className='sp'; sp.setAttribute('aria-hidden','true');
+  const spi=document.createElement('i'); sp.appendChild(spi); document.body.appendChild(sp);
+  let spq=false;
+  const spUpdate=()=>{ spq=false; const h=d.scrollHeight-innerHeight; spi.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')'; };
+  const spReq=()=>{ if(!spq){ spq=true; requestAnimationFrame(spUpdate); } };
+  addEventListener('scroll',spReq,{passive:true}); addEventListener('resize',spReq); addEventListener('load',spReq);
+  if(window.ResizeObserver) new ResizeObserver(spReq).observe(document.body);
+  spReq();
+
+  /* Hero parallax (mouse + scroll) */
+  const heroBg=document.querySelector('.hero-bg');
+  if(heroBg&&!REDUCED){
+    let mx=0,my=0,sy=0,pq=false;
+    const apply=()=>{ pq=false; heroBg.style.transform='translate3d('+(mx*-16)+'px,'+(my*-12+sy*0.12)+'px,0)'; };
+    const req=()=>{ if(!pq){ pq=true; requestAnimationFrame(apply); } };
+    if(FINE) addEventListener('mousemove',e=>{ mx=e.clientX/innerWidth-.5; my=e.clientY/innerHeight-.5; req(); },{passive:true});
+    addEventListener('scroll',()=>{ sy=scrollY; req(); },{passive:true});
+  }
+
+  /* Custom cursor: orange dot + halo that grows over clickable things */
+  if(FINE){
+    const dot=document.createElement('div'); dot.className='cur-dot';
+    const ring=document.createElement('div'); ring.className='cur-ring';
+    dot.setAttribute('aria-hidden','true'); ring.setAttribute('aria-hidden','true');
+    document.body.append(ring,dot); d.classList.add('has-cursor');
+    const SEL='a,button,[role="button"],.zoom-btn,label,select,summary';
+    let x=-100,y=-100,rx=-100,ry=-100,seen=false,run=false;
+    const draw=()=>{
+      const k=REDUCED?1:.2; rx+=(x-rx)*k; ry+=(y-ry)*k;
+      dot.style.transform='translate3d('+x+'px,'+y+'px,0) translate(-50%,-50%)';
+      ring.style.transform='translate3d('+rx+'px,'+ry+'px,0) translate(-50%,-50%)';
+      if(Math.abs(x-rx)>.1||Math.abs(y-ry)>.1) requestAnimationFrame(draw); else run=false;
+    };
+    addEventListener('mousemove',e=>{
+      x=e.clientX; y=e.clientY;
+      if(!seen){ seen=true; rx=x; ry=y; d.classList.add('cur-on'); }
+      ring.classList.toggle('hot',!!(e.target.closest&&e.target.closest(SEL)));
+      if(!run){ run=true; requestAnimationFrame(draw); }
+    },{passive:true});
+    d.addEventListener('mouseleave',()=>d.classList.remove('cur-on'));
+    d.addEventListener('mouseenter',()=>{ if(seen) d.classList.add('cur-on'); });
+    addEventListener('mousedown',()=>ring.classList.add('down'));
+    addEventListener('mouseup',()=>ring.classList.remove('down'));
+  }
+
+  /* Toast + copy email */
+  const toastEl=document.createElement('div'); toastEl.className='toast'; toastEl.setAttribute('role','status'); toastEl.setAttribute('aria-live','polite');
+  document.body.appendChild(toastEl);
+  let toastT;
+  function toast(msg){
+    toastEl.textContent=msg; toastEl.classList.add('show');
+    clearTimeout(toastT); toastT=setTimeout(()=>toastEl.classList.remove('show'),2200);
+  }
+  function legacyCopy(t){
+    try{
+      const ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly','');
+      ta.style.cssText='position:fixed;top:0;opacity:0'; document.body.appendChild(ta); ta.select();
+      const ok=document.execCommand('copy'); ta.remove(); return ok;
+    }catch(err){ return false; }
+  }
+  function copyText(t){
+    if(navigator.clipboard&&window.isSecureContext) return navigator.clipboard.writeText(t).then(()=>true,()=>legacyCopy(t));
+    return Promise.resolve(legacyCopy(t));
+  }
+  document.addEventListener('click',e=>{
+    const a=e.target.closest&&e.target.closest('a[href^="mailto:"]');
+    if(!a) return;
+    e.preventDefault();
+    const addr=a.getAttribute('href').replace(/^mailto:/i,'').split('?')[0];
+    copyText(addr).then(ok=>{ if(ok) toast(UI[curLang].copied); else location.href=a.href; });
+  });
+
+  /* Interface sounds: tiny synthesized blips, off by default */
+  let ctx=null,sfxOn=false;
+  try{ sfxOn=localStorage.getItem('sfx')==='1'; }catch(e){}
+  function blip(f1,f2,dur,vol){
+    const C=window.AudioContext||window.webkitAudioContext; if(!C) return;
+    if(!ctx) ctx=new C();
+    if(ctx.state==='suspended') ctx.resume();
+    const t=ctx.currentTime, o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='triangle'; o.frequency.setValueAtTime(f1,t); o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.012); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t+dur+0.03);
+  }
+  const sfx=document.createElement('button'); sfx.type='button'; sfx.className='sfx';
+  sfx.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="w" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="x" d="m16 9 5 6M21 9l-5 6"/></svg>';
+  document.body.appendChild(sfx);
+  function sfxPaint(l){
+    const u=UI[l||curLang], s=sfxOn?u.sfx_on:u.sfx_off;
+    sfx.setAttribute('aria-pressed',String(sfxOn)); sfx.setAttribute('aria-label',s); sfx.title=s;
+  }
+  binds.push(sfxPaint);
+  sfx.addEventListener('click',()=>{
+    sfxOn=!sfxOn;
+    try{ localStorage.setItem('sfx',sfxOn?'1':'0'); }catch(e){}
+    sfxPaint(); if(sfxOn) blip(440,880,.14,.05);
+  });
+  document.addEventListener('click',e=>{
+    if(!sfxOn) return;
+    const t=e.target.closest&&e.target.closest('a[href],button,.zoom-btn');
+    if(t&&!t.classList.contains('sfx')) blip(520,780,.08,.045);
+  });
+
+  /* 404: GAME OVER countdown back to the start page */
+  const cnt=document.getElementById('go-count');
+  if(cnt){
+    let n=10;
+    const iv=setInterval(()=>{
+      n--; cnt.textContent=n;
+      if(n<=0){ clearInterval(iv); location.href=new URL('index.html',document.baseURI).href; }
+    },1000);
+  }
+})();
+
 if(proj){ proj.textContent=''; buildAccordion(proj); }
 setupForm();
 document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang,true)));
