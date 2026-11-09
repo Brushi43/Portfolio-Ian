@@ -27,7 +27,17 @@ const projects3d = [
   meta:{en:"Mystery game, released on Steam · 3D models · Blender",
         es:"Juego de misterio, publicado en Steam · Modelos 3D · Blender"},
   d:{en:"A murder mystery set in 1930s England and released on Steam. Players investigate a crime in a mansion, question suspects and make key decisions to uncover the truth before Scotland Yard arrives. I created the 3D models using Blender.",
-     es:"Misterio de asesinato ambientado en la Inglaterra de los años 30 y publicado en Steam. Los jugadores investigan un crimen en una mansión, interrogan a los sospechosos y toman decisiones clave para descubrir la verdad antes de que llegue Scotland Yard. Creé los modelos 3D con Blender."}}
+     es:"Misterio de asesinato ambientado en la Inglaterra de los años 30 y publicado en Steam. Los jugadores investigan un crimen en una mansión, interrogan a los sospechosos y toman decisiones clave para descubrir la verdad antes de que llegue Scotland Yard. Creé los modelos 3D con Blender."}},
+ {slug:"carl",n:2,title:"Carl",
+  video:{2:"media/carl-turnaround.mp4"},
+  pos:{1:"50% 34%"},
+  alt:{1:"Carl: photo of the original artwork by Haitz de Diego, an elderly man leaning over a window sill",2:"Carl: turnaround of the 3D model of the elderly man"},
+  meta:{en:"3D character modeling · Based on the artwork Carl",
+        es:"Modelado 3D de personaje · Basado en la obra Carl",
+        fr:"Modélisation 3D de personnage · D'après l'œuvre Carl"},
+  d:{en:"3D model of the elderly man from the artwork Carl by Haitz de Diego.",
+     es:"Modelo 3D del señor mayor que aparece en la obra Carl, de Haitz de Diego.",
+     fr:"Modèle 3D du vieil homme représenté dans l'œuvre Carl de Haitz de Diego."}}
 ];
 const projectsGames = [
  {slug:"borealis",title:"Borealis",
@@ -49,7 +59,7 @@ const projectsGames = [
 
 const UI = {
  en:{
-  lb_close:"Close", lb_prev:"Previous image", lb_next:"Next image", lb_open:"Enlarge image", lb_more:"more photos",
+  lb_close:"Close", lb_prev:"Previous image", lb_next:"Next image", lb_open:"Enlarge image", lb_more:"more photos", lb_video:"Play video",
   copied:"Email copied!", sfx_on:"Interface sounds: on", sfx_off:"Interface sounds: off",
   e_title:"GAME OVER", e_msg:"This page doesn't exist or has moved.", e_cont:"CONTINUE?", e_back:"Returning to the start automatically", e_btn:"Continue",
   title_404:"Game Over | Ian Aviñó", desc_404:"Page not found.",
@@ -73,7 +83,7 @@ const UI = {
   f_err:"The message couldn't be sent. Please try again or write to me at ianavinosoler@gmail.com."
  },
  es:{
-  lb_close:"Cerrar", lb_prev:"Imagen anterior", lb_next:"Imagen siguiente", lb_open:"Ampliar imagen", lb_more:"fotos más",
+  lb_close:"Cerrar", lb_prev:"Imagen anterior", lb_next:"Imagen siguiente", lb_open:"Ampliar imagen", lb_more:"fotos más", lb_video:"Reproducir vídeo",
   copied:"¡Correo copiado!", sfx_on:"Sonidos de interfaz: activados", sfx_off:"Sonidos de interfaz: desactivados",
   e_title:"GAME OVER", e_msg:"Esta página no existe o se ha movido.", e_cont:"¿CONTINUAR?", e_back:"Volviendo al inicio automáticamente", e_btn:"Continuar",
   title_404:"Game Over | Ian Aviñó", desc_404:"Página no encontrada.",
@@ -118,11 +128,11 @@ const CONTACT_EMAIL='ianavinosoler@gmail.com';
 let curLang='en';
 const binds=[];
 
-/* Image viewer: click a photo to enlarge it; arrows, keyboard and swipe move between the project's photos */
+/* Image viewer: click a photo to enlarge it; arrows, keyboard and swipe move between the project's items (photos and videos) */
 const Lightbox=(function(){
   const cache={};
-  let root,img,cap,btnClose,btnPrev,btnNext;
-  let list=[],alts=[],title='',idx=0,opener=null,sx=null;
+  let root,img,vid,cap,btnClose,btnPrev,btnNext;
+  let list=[],title='',idx=0,opener=null,sx=null;
   function resolve(base){
     if(!cache[base]) cache[base]=new Promise(res=>{
       let i=0; const t=new Image();
@@ -134,24 +144,34 @@ const Lightbox=(function(){
   }
   async function show(i){
     const n=list.length; idx=((i%n)+n)%n;
-    const base=list[idx];
+    const it=list[idx];
     root.classList.add('loading');
-    const src=await resolve(base);
-    if(root.hidden||base!==list[idx]) return;
-    if(src){ img.src=src; img.alt=alts[idx]; }
+    const src=await resolve(it.base);
+    if(root.hidden||it!==list[idx]) return;
+    vid.pause(); vid.hidden=true;
+    if(src){ img.src=src; img.alt=it.alt; }
+    img.hidden=false;
+    if(it.video){
+      vid.onloadeddata=()=>{ if(root.hidden||it!==list[idx]) return; img.hidden=true; vid.hidden=false; vid.play().catch(()=>{}); };
+      vid.onerror=()=>{ vid.hidden=true; img.hidden=false; };
+      vid.poster=src||''; vid.setAttribute('aria-label',it.alt);
+      if(vid.getAttribute('src')!==it.video) vid.src=it.video;
+      else if(vid.readyState>=2) vid.onloadeddata();
+    }
     cap.textContent=title+'  ·  '+(idx+1)+' / '+n;
     root.classList.remove('loading');
     btnPrev.hidden=btnNext.hidden=n<2;
-    if(n>1){ resolve(list[(idx+1)%n]); resolve(list[(idx-1+n)%n]); }
+    if(n>1){ resolve(list[(idx+1)%n].base); resolve(list[(idx-1+n)%n].base); }
   }
-  function open(bases,altList,t,i,from){
-    list=bases; alts=altList; title=t; opener=from;
+  function open(items,t,i,from){
+    list=items; title=t; opener=from;
     root.hidden=false; document.documentElement.style.overflow='hidden';
     show(i); btnClose.focus();
   }
   function close(){
     if(root.hidden) return;
     root.hidden=true; img.removeAttribute('src');
+    vid.pause(); vid.removeAttribute('src'); vid.load();
     document.documentElement.style.overflow='';
     if(opener&&opener.focus) opener.focus();
   }
@@ -163,8 +183,10 @@ const Lightbox=(function(){
     btnNext=document.createElement('button'); btnNext.type='button'; btnNext.className='lb-nav lb-next';
     const fig=document.createElement('figure'); fig.className='lb-fig';
     img=document.createElement('img'); img.className='lb-img'; img.alt='';
+    vid=document.createElement('video'); vid.className='lb-vid'; vid.hidden=true;
+    vid.controls=true; vid.loop=true; vid.muted=true; vid.playsInline=true; vid.preload='auto';
     cap=document.createElement('figcaption'); cap.className='lb-cap';
-    fig.append(img,cap); root.append(btnClose,btnPrev,btnNext,fig); document.body.appendChild(root);
+    fig.append(img,vid,cap); root.append(btnClose,btnPrev,btnNext,fig); document.body.appendChild(root);
     btnClose.addEventListener('click',close);
     btnPrev.addEventListener('click',()=>show(idx-1));
     btnNext.addEventListener('click',()=>show(idx+1));
@@ -199,24 +221,43 @@ const Lightbox=(function(){
 
 function buildProject(p){
   const N=p.n||3;
-  const bases=Array.from({length:N},(_,k)=>`media/${p.slug}-${k+1}`);
-  const alts=bases.map((_,k)=>`${p.title}: ${p.meta.en.split(' · ')[0]} (image ${k+1} of ${N})`);
+  const items=Array.from({length:N},(_,k)=>({
+    base:`media/${p.slug}-${k+1}`,
+    alt:(p.alt&&p.alt[k+1])||`${p.title}: ${p.meta.en.split(' · ')[0]} (image ${k+1} of ${N})`,
+    video:(p.video&&p.video[k+1])||null
+  }));
   const art=document.createElement('article'); art.className='project';
-  const g=document.createElement('div'); g.className='gal';
+  const g=document.createElement('div'); g.className='gal'+(N===2?' two':'');
   const slots=[];
   for(let k=0;k<Math.min(N,3);k++){
-    const s=slot(k===0?'big':'',bases[k],`Add ${bases[k]}`,alts[k]);
+    const it=items[k];
+    const s=slot(k===0?'big':'',it.base,`Add ${it.base}`,it.alt);
     s.classList.add('zoom');
+    if(p.pos&&p.pos[k+1]) s.style.setProperty('--pos',p.pos[k+1]);
+    if(it.video){
+      s.classList.add('has-video');
+      const v=document.createElement('video'); v.className='thumb-vid';
+      v.muted=true; v.loop=true; v.playsInline=true; v.preload='none'; v.tabIndex=-1; v.setAttribute('aria-hidden','true');
+      v.addEventListener('playing',()=>v.classList.add('on'));
+      v.addEventListener('error',()=>v.remove());
+      s.appendChild(v);
+      if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver' in window){
+        new IntersectionObserver(es=>es.forEach(en=>{
+          if(en.isIntersecting){ if(!v.getAttribute('src')) v.src=it.video; v.play().catch(()=>{}); } else v.pause();
+        }),{threshold:.35}).observe(s);
+      }
+      const pl=document.createElement('span'); pl.className='play'; pl.setAttribute('aria-hidden','true'); s.appendChild(pl);
+    }
     if(k===2&&N>3){
       const more=document.createElement('div'); more.className='more'; more.setAttribute('aria-hidden','true');
       more.textContent='+'+(N-3); s.appendChild(more);
     }
     const zb=document.createElement('button'); zb.type='button'; zb.className='zoom-btn';
-    zb.addEventListener('click',()=>Lightbox.open(bases,alts,p.title,k,zb));
+    zb.addEventListener('click',()=>Lightbox.open(items,p.title,k,zb));
     s.appendChild(zb);
     binds.push(l=>{
       const extra=(k===2&&N>3)?', +'+(N-3)+' '+UI[l].lb_more:'';
-      zb.setAttribute('aria-label',UI[l].lb_open+': '+p.title+' ('+(k+1)+'/'+N+')'+extra);
+      zb.setAttribute('aria-label',(it.video?UI[l].lb_video:UI[l].lb_open)+': '+p.title+' ('+(k+1)+'/'+N+')'+extra);
     });
     g.appendChild(s); slots.push(s);
   }
@@ -334,7 +375,7 @@ const proj=document.getElementById('projects');
 Lightbox.build();
 
 /* ===== Game-style extras =====
-   loading screen (first visit of a session), page wipe between pages, scroll bar, hero parallax,
+   loading screen (first visit of a session), scroll bar, hero parallax,
    custom cursor, copy-email toast, interface sounds (off by default), 404 countdown */
 (function(){
   const d=document.documentElement;
@@ -355,22 +396,6 @@ Lightbox.build();
     if(document.readyState==='complete') go(); else addEventListener('load',go,{once:true});
     setTimeout(finish,3200);
   }
-
-  /* Page wipe: slides over the screen before leaving and off it when the next page opens */
-  ss('wipe',null);
-  if(d.classList.contains('wipe-in')) setTimeout(()=>d.classList.remove('wipe-in'),700);
-  addEventListener('pageshow',e=>{ if(e.persisted) d.classList.remove('wipe-out'); });
-  document.addEventListener('click',e=>{
-    if(REDUCED||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey) return;
-    const a=e.target.closest&&e.target.closest('a[href]');
-    if(!a||(a.target&&a.target!=='_self')||a.hasAttribute('download')) return;
-    let u; try{ u=new URL(a.href,location.href); }catch(err){ return; }
-    if(u.origin!==location.origin||!/(\.html|\/)$/.test(u.pathname)) return;
-    if(u.pathname===location.pathname&&u.search===location.search) return;
-    e.preventDefault();
-    ss('wipe','1'); d.classList.add('wipe-out');
-    setTimeout(()=>{ location.href=a.href; },300);
-  });
 
   /* Scroll progress bar */
   const sp=document.createElement('div'); sp.className='sp'; sp.setAttribute('aria-hidden','true');

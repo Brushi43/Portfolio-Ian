@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>(function(){var d=document.documentElement,rm=matchMedia('(prefers-reduced-motion:reduce)').matches,s=null,l='en';try{s=sessionStorage}catch(e){}try{var x=localStorage.getItem('lang');l=(x==='es'||x==='en')?x:((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en')}catch(e){}d.setAttribute('data-ll',l);if(!rm&&s){if(!s.getItem('seen'))d.classList.add('ls');else if(s.getItem('wipe'))d.classList.add('wipe-in')}})()</script>
+<script>(function(){var d=document.documentElement,rm=matchMedia('(prefers-reduced-motion:reduce)').matches,s=null,l='en';try{s=sessionStorage}catch(e){}try{var x=localStorage.getItem('lang');l=(x==='es'||x==='en')?x:((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en')}catch(e){}d.setAttribute('data-ll',l);if(!rm&&s&&!s.getItem('seen'))d.classList.add('ls')})()</script>
 <title>About Ian Aviñó | 3D Artist &amp; Game Developer</title>
 <meta name="description" content="About Ian Aviñó, a digital artist with a degree in Digital Arts from La Salle in Barcelona. 3D modeling in Blender, game development in Unity and Unreal Engine 5.">
 <meta name="robots" content="index,follow,max-image-preview:large">
