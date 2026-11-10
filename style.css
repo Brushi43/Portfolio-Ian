@@ -67,7 +67,7 @@ h3.group{font:600 1.1rem var(--display);color:#000;text-transform:uppercase;marg
 .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:.75rem;font-size:.85rem;color:var(--muted);background:repeating-linear-gradient(135deg,#121216 0 14px,#17171c 14px 28px)}
 .project h4{font:700 1.5rem/1.2 var(--display);margin:1.5rem 0 .3rem}
 .meta{color:var(--gold);font-weight:500;margin-bottom:.7rem}
-.project p.d{max-width:68ch;color:var(--muted)}
+.project p.d{color:var(--muted)}
 
 .about{display:grid;gap:3rem;grid-template-columns:1.3fr 1fr}
 .avatar{position:relative;width:clamp(160px,22vw,240px);aspect-ratio:1;border-radius:50%;overflow:hidden;border:2px solid var(--gold);background:var(--panel);margin-bottom:2rem}
@@ -238,5 +238,5 @@ nav a[aria-current="page"]::after{content:" ]"}
 @media (prefers-reduced-motion:reduce){.slot .thumb-vid{transition:none}}
 
 /* Role line under each project's subtitle */
-.project p.role{margin:-.25rem 0 .7rem;max-width:68ch;color:var(--text)}
+.project p.role{margin:.9rem 0 0;color:var(--text)}
 .project p.role b{color:var(--gold);font-weight:600}
