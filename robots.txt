@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://brushi43.github.io/Portfolio-Ian/sitemap.xml
+Sitemap: https://brushi43.github.io/sitemap.xml
