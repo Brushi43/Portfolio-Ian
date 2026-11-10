@@ -42,7 +42,7 @@ const PROJECTS = [
   d:{en:"3D model of the elderly man from the artwork Carl by Haitz de Diego.",
      es:"Modelo 3D del señor mayor que aparece en la obra Carl, de Haitz de Diego."}}
 ,
- {slug:"borealis",title:"Borealis",
+ {slug:"borealis",n:5,title:"Borealis",
   kind:"First-person immersive experience",
   meta:{en:"Unreal Engine · Blender · ZBrush",es:"Unreal Engine · Blender · ZBrush"},
   role:{en:"Scene setup & gameplay mechanics programming",es:"Montaje del escenario y programación de mecánicas de juego"},
