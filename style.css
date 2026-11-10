@@ -223,7 +223,8 @@ nav a[aria-current="page"]::after{content:" ]"}
 
 /* Projects with video / only two items */
 .slot img{object-position:var(--pos,center)}
-.gal.two .slot:not(.big){grid-row:1/3}
+.gal.two{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+.gal.two .slot,.gal.two .big.slot{aspect-ratio:16/9;grid-row:auto}
 .slot .thumb-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--pos,center);opacity:0;transition:opacity .3s;pointer-events:none}
 .slot .thumb-vid.on{opacity:1}
 .slot .play{display:none;position:absolute;right:.7rem;bottom:.7rem;z-index:1;width:2.4rem;height:2.4rem;border-radius:50%;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.6);pointer-events:none}
@@ -235,3 +236,7 @@ nav a[aria-current="page"]::after{content:" ]"}
   .gal.two .slot:not(.big){grid-column:1/3;grid-row:auto;aspect-ratio:16/9}
 }
 @media (prefers-reduced-motion:reduce){.slot .thumb-vid{transition:none}}
+
+/* Role line under each project's subtitle */
+.project p.role{margin:-.25rem 0 .7rem;max-width:68ch;color:var(--text)}
+.project p.role b{color:var(--gold);font-weight:600}

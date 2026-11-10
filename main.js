@@ -7,52 +7,65 @@
    About photo (circular): media/ian.jpg (or .jpeg / .png / .webp)
    Missing photos show a placeholder.
    Texts of the rest of the site: see the UI object below. */
-const projects3d = [
+const PROJECTS = [
  {slug:"unreal-journey",n:5,title:"Unreal Journey", yt:"https://youtu.be/9wh7et9AHBc",
-  meta:{en:"Sci-fi short film · Environments & final video · Unreal Engine",
-        es:"Cortometraje de ciencia ficción · Entornos y vídeo final · Unreal Engine"},
+  meta:{en:"Sci-fi short film · Unreal Engine",es:"Cortometraje de ciencia ficción · Unreal Engine"},
+  role:{en:"Environment setup & final video",es:"Montaje del escenario y vídeo final"},
   d:{en:"A sci-fi short film about a space traveler who surveys three locations on Earth, a forest, an island and a desert, before choosing where to land. I built the environments and produced the final video in Unreal Engine.",
      es:"Cortometraje de ciencia ficción sobre un viajero espacial que explora tres lugares de la Tierra, un bosque, una isla y un desierto, antes de elegir dónde aterrizar. Construí los entornos y produje el vídeo final en Unreal Engine."}},
  {slug:"gaming-dog",n:7,title:"Gaming Dog",
-  meta:{en:"Low-poly cartoon scene · Modeling & texturing · Blender",
-        es:"Escena cartoon low-poly · Modelado y texturizado · Blender"},
+  meta:{en:"Low-poly cartoon scene · Blender",es:"Escena cartoon low-poly · Blender"},
+  role:{en:"Entire scene",es:"Toda la escena"},
   d:{en:"A low-poly cartoon scene showing a dog playing video games in his bedroom. The project covers the full asset workflow, from modeling to texturing, developed entirely in Blender.",
      es:"Escena cartoon low-poly de un perro jugando a videojuegos en su habitación. El proyecto abarca todo el flujo de trabajo de los assets, del modelado al texturizado, desarrollado íntegramente en Blender."}},
  {slug:"moles-defense",title:"Moles Defense",
-  meta:{en:"Tower defense game · 3D models, environment & animation · Blender",
-        es:"Videojuego tower defense · Modelos 3D, entorno y animación · Blender"},
+  meta:{en:"Tower defense game · Blender",es:"Videojuego tower defense · Blender"},
+  role:{en:"Modeling and texturing of the environment and moles, scene setup and mole animation",es:"Modelado y texturizado del escenario y los topos, montaje del escenario y animación de los topos"},
   d:{en:"A tower defense game set on a circular map, where waves of moles emerge from the center and advance toward the outer barrier. Players must position their defenses strategically to stop them. I created the 3D models, built the environment and animated the characters in Blender.",
      es:"Videojuego tower defense ambientado en un mapa circular, donde oleadas de topos emergen del centro y avanzan hacia la barrera exterior. El jugador debe colocar sus defensas de forma estratégica para detenerlos. Creé los modelos 3D, construí el entorno y animé los personajes en Blender."}},
  {slug:"murder-by-death",n:5,title:"Murder By Death",
-  meta:{en:"Mystery game, released on Steam · 3D models · Blender",
-        es:"Juego de misterio, publicado en Steam · Modelos 3D · Blender"},
+  meta:{en:"Mystery game, released on Steam · Blender",es:"Juego de misterio, publicado en Steam · Blender"},
+  role:{en:"Modeling of some assets and room setup",es:"Modelado de algunos assets y montaje de habitaciones"},
   d:{en:"A murder mystery set in 1930s England and released on Steam. Players investigate a crime in a mansion, question suspects and make key decisions to uncover the truth before Scotland Yard arrives. I created the 3D models using Blender.",
      es:"Misterio de asesinato ambientado en la Inglaterra de los años 30 y publicado en Steam. Los jugadores investigan un crimen en una mansión, interrogan a los sospechosos y toman decisiones clave para descubrir la verdad antes de que llegue Scotland Yard. Creé los modelos 3D con Blender."}},
  {slug:"carl",n:2,title:"Carl",
   video:{2:"media/carl-turnaround.mp4"},
   pos:{1:"50% 34%"},
   alt:{1:"Carl: photo of the original artwork by Haitz de Diego, an elderly man leaning over a window sill",2:"Carl: turnaround of the 3D model of the elderly man"},
-  meta:{en:"3D character modeling · Based on the artwork Carl",
-        es:"Modelado 3D de personaje · Basado en la obra Carl"},
+  meta:{en:"3D character modeling · ZBrush",es:"Modelado 3D de personaje · ZBrush"},
+  role:{en:"Modeling",es:"Modelado"},
   d:{en:"3D model of the elderly man from the artwork Carl by Haitz de Diego.",
      es:"Modelo 3D del señor mayor que aparece en la obra Carl, de Haitz de Diego."}}
-];
-const projectsGames = [
+,
  {slug:"borealis",title:"Borealis",
-  meta:{en:"First-person PC game · Programming · Unreal Engine",
-        es:"Videojuego en primera persona para PC · Programación · Unreal Engine"},
-  d:{en:"A first-person PC experience in which the player travels through different worlds collecting colored prisms to restore the aurora borealis to the sky. I was responsible for the gameplay programming, developed in Unreal Engine.",
-     es:"Experiencia en primera persona para PC en la que el jugador viaja por distintos mundos recogiendo prismas de colores para devolver la aurora boreal al cielo. Me encargué de la programación de la jugabilidad, desarrollada en Unreal Engine."}},
+  meta:{en:"First-person immersive experience · Unreal Engine",es:"Experiencia inmersiva en primera persona · Unreal Engine"},
+  role:{en:"Scene setup and full programming",es:"Montaje del escenario y programación completa"},
+  d:{en:"An immersive first-person PC experience in which the player travels through different worlds collecting colored prisms to restore the aurora borealis to the sky. I was responsible for the gameplay programming, developed in Unreal Engine.",
+     es:"Experiencia inmersiva en primera persona para PC en la que el jugador viaja por distintos mundos recogiendo prismas de colores para devolver la aurora boreal al cielo. Me encargué de la programación de la jugabilidad, desarrollada en Unreal Engine."}},
  {slug:"ghosts-whispers",title:"Ghosts' Whispers", yt:"https://youtu.be/ysrodL3rvYE",
-  meta:{en:"Pixel art mystery & puzzle game · Programming · GDevelop",
-        es:"Juego de misterio y puzles en pixel art · Programación · GDevelop"},
+  meta:{en:"Pixel art mystery & puzzle game · GDevelop",es:"Juego de misterio y puzles en pixel art · GDevelop"},
+  role:{en:"Full programming",es:"Programación completa"},
   d:{en:"A pixel art mystery game built around puzzle solving, developed in GDevelop. I programmed all the mechanics and integrated the narrative and art assets provided by the team.",
      es:"Juego de misterio en pixel art centrado en la resolución de puzles, desarrollado en GDevelop. Programé todas las mecánicas e integré los recursos narrativos y artísticos aportados por el equipo."}},
  {slug:"land-between-rivers",title:"Land Between Rivers", yt:"https://youtu.be/6xman6HmrGE",
-  meta:{en:"Third-person exploration & puzzle demo · Modeling & development · Unity",
-        es:"Demo de exploración y puzles en tercera persona · Modelado y desarrollo · Unity"},
+  meta:{en:"Third-person exploration & puzzle demo · Unity",es:"Demo de exploración y puzles en tercera persona · Unity"},
+  role:{en:"Everything: modeling, texturing, scene setup, lighting, narrative, UI design and programming",es:"Todo: modelado, texturas, montaje, iluminación, narrativa, diseño de UI y programación"},
   d:{en:"A third-person exploration and puzzle demo set in an archaeological museum dedicated to Mesopotamia, where the player examines the exhibits and solves puzzles. I modeled every object and developed the full demo in Unity.",
-     es:"Demo de exploración y puzles en tercera persona ambientada en un museo arqueológico dedicado a Mesopotamia, donde el jugador examina las piezas expuestas y resuelve puzles. Modelé todos los objetos y desarrollé la demo completa en Unity."}}
+     es:"Demo de exploración y puzles en tercera persona ambientada en un museo arqueológico dedicado a Mesopotamia, donde el jugador examina las piezas expuestas y resuelve puzles. Modelé todos los objetos y desarrollé la demo completa en Unity."}},
+ {slug:"creature",n:2,title:"Creature",
+  video:{2:"media/creature-turnaround.mp4"},
+  alt:{1:"Creature: 3D render of the creature model, a small dark dragon inspired by Toothless",2:"Creature: turnaround of the 3D creature model"},
+  meta:{en:"3D creature modeling · ZBrush",es:"Modelado 3D de criatura · ZBrush"},
+  role:{en:"Modeling",es:"Modelado"},
+  d:{en:"3D model of a creature based on Toothless from How to Train Your Dragon.",
+     es:"Modelo 3D de una criatura basada en Toothless de Cómo entrenar a tu dragón."}}
+];
+
+const GROUP_DEFS = [
+  {key:"g_env", slugs:["unreal-journey","gaming-dog"]},
+  {key:"g_char",slugs:["carl","creature"]},
+  {key:"g_art", slugs:["moles-defense","murder-by-death"]},
+  {key:"g_dev", slugs:["land-between-rivers","borealis","ghosts-whispers"]}
 ];
 
 const UI = {
@@ -62,14 +75,14 @@ const UI = {
   e_title:"GAME OVER", e_msg:"This page doesn't exist or has moved.", e_cont:"CONTINUE?", e_back:"Returning to the start automatically", e_btn:"Continue",
   title_404:"Game Over | Ian Aviñó", desc_404:"Page not found.",
   title_home:"Ian Aviñó | 3D Artist & Game Developer", title_portfolio:"Portfolio: 3D Art & Game Projects | Ian Aviñó", title_about:"About Ian Aviñó | 3D Artist & Game Developer", title_contact:"Contact Ian Aviñó | 3D Artist & Game Developer",
-  desc_home:"Ian Aviñó is a 3D artist and game developer from Catalonia. Explore his 3D art, environments and games built in Blender, Unity and Unreal Engine.", desc_portfolio:"Portfolio of Ian Aviñó: 3D art and environments made in Blender and Unreal Engine, and games developed in Unity, Unreal Engine 5 and GDevelop, including Murder by Death on Steam.", desc_about:"About Ian Aviñó, a digital artist with a degree in Digital Arts from La Salle in Barcelona. 3D modeling in Blender, game development in Unity and Unreal Engine 5.", desc_contact:"Get in touch with Ian Aviñó, 3D artist and game developer, for collaborations or job opportunities.",
+  desc_home:"Ian Aviñó is a 3D artist and game developer from Catalonia. Explore his 3D art, environments and games built in Blender, ZBrush, Unity and Unreal Engine.", desc_portfolio:"Portfolio of Ian Aviñó: 3D art, characters and environments made in Blender, ZBrush and Unreal Engine, and games developed in Unity, Unreal Engine 5 and GDevelop, including Murder by Death on Steam.", desc_about:"About Ian Aviñó, a digital artist with a degree in Digital Arts from La Salle in Barcelona. 3D modeling in Blender and ZBrush, game development in Unity and Unreal Engine 5.", desc_contact:"Get in touch with Ian Aviñó, 3D artist and game developer, for collaborations or job opportunities.",
   brand:"Ian Aviñó | 3D Artist & Game Developer",
   nav_home:"Home", nav_portfolio:"Portfolio", nav_about:"About", nav_contact:"Contact",
   h1:"Building worlds. Bringing them to life.",
   hero1:"I'm Ian Aviñó, a digital artist focused on 3D modeling and game development. I build my own models and turn them into playable demos and small games.",
   hero2:"I love inventing fictional worlds and bringing them to life, from the first sketch to something you can explore.",
   h2_portfolio:"Portfolio", tools_title:"Tools I work with",
-  g3d:"3D Art & Environments", ggames:"Game Development",
+  g_env:"3D Environments & Scenes", g_char:"3D Characters & Models", g_art:"Games · 3D Art", g_dev:"Games · Development", role_label:"My role",
   h2_about:"About",
   about1:"I'm Ian Aviñó, a digital artist focused on 3D modeling and game development.",
   about2:"I build my own models and turn them into playable demos and small games. I love inventing fictional worlds and bringing them to life, from the first sketch to something you can explore.",
@@ -86,14 +99,14 @@ const UI = {
   e_title:"GAME OVER", e_msg:"Esta página no existe o se ha movido.", e_cont:"¿CONTINUAR?", e_back:"Volviendo al inicio automáticamente", e_btn:"Continuar",
   title_404:"Game Over | Ian Aviñó", desc_404:"Página no encontrada.",
   title_home:"Ian Aviñó | Artista 3D y Game Developer", title_portfolio:"Portfolio: arte 3D y proyectos de videojuegos | Ian Aviñó", title_about:"Sobre Ian Aviñó | Artista 3D y Game Developer", title_contact:"Contacto con Ian Aviñó | Artista 3D y Game Developer",
-  desc_home:"Ian Aviñó es artista 3D y game developer de Cataluña. Descubre su arte 3D, entornos y juegos creados con Blender, Unity y Unreal Engine.", desc_portfolio:"Portfolio de Ian Aviñó: arte 3D y entornos hechos en Blender y Unreal Engine, y videojuegos desarrollados en Unity, Unreal Engine 5 y GDevelop, entre ellos Murder by Death en Steam.", desc_about:"Sobre Ian Aviñó, artista digital graduado en Artes Digitales por La Salle, Barcelona. Modelado 3D en Blender y desarrollo de videojuegos en Unity y Unreal Engine 5.", desc_contact:"Contacta con Ian Aviñó, artista 3D y game developer, para colaboraciones u ofertas de trabajo.",
+  desc_home:"Ian Aviñó es artista 3D y game developer de Cataluña. Descubre su arte 3D, entornos y juegos creados con Blender, ZBrush, Unity y Unreal Engine.", desc_portfolio:"Portfolio de Ian Aviñó: arte 3D, personajes y entornos hechos en Blender, ZBrush y Unreal Engine, y videojuegos desarrollados en Unity, Unreal Engine 5 y GDevelop, entre ellos Murder by Death en Steam.", desc_about:"Sobre Ian Aviñó, artista digital graduado en Artes Digitales por La Salle, Barcelona. Modelado 3D en Blender y ZBrush y desarrollo de videojuegos en Unity y Unreal Engine 5.", desc_contact:"Contacta con Ian Aviñó, artista 3D y game developer, para colaboraciones u ofertas de trabajo.",
   brand:"Ian Aviñó | Artista 3D y Game Developer",
   nav_home:"Inicio", nav_portfolio:"Portfolio", nav_about:"Sobre mí", nav_contact:"Contacto",
   h1:"Construyendo mundos. Dándoles vida.",
   hero1:"Soy Ian Aviñó, artista digital especializado en modelado 3D y desarrollo de videojuegos. Creo mis propios modelos y los convierto en demos jugables y pequeños juegos.",
   hero2:"Me encanta inventar mundos ficticios y darles vida, desde el primer boceto hasta algo que se puede explorar.",
   h2_portfolio:"Portfolio", tools_title:"Herramientas con las que trabajo",
-  g3d:"Arte 3D y entornos", ggames:"Desarrollo de videojuegos",
+  g_env:"Entornos y escenas 3D", g_char:"Personajes y modelos 3D", g_art:"Videojuegos · Arte 3D", g_dev:"Videojuegos · Desarrollo", role_label:"Mi rol",
   h2_about:"Sobre mí",
   about1:"Soy Ian Aviñó, artista digital especializado en modelado 3D y desarrollo de videojuegos.",
   about2:"Creo mis propios modelos y los convierto en demos jugables y pequeños juegos. Me encanta inventar mundos ficticios y darles vida, desde el primer boceto hasta algo que se puede explorar.",
@@ -274,12 +287,19 @@ function buildProject(p){
   const mt=document.createElement('p'); mt.className='meta';
   const d=document.createElement('p'); d.className='d';
   binds.push(l=>{ mt.textContent=p.meta[l]; d.textContent=p.d[l]; });
-  art.append(g,t,mt,d);
+  art.append(g,t,mt);
+  if(p.role){
+    const ro=document.createElement('p'); ro.className='role';
+    const rl=document.createElement('b'); const rt=document.createElement('span');
+    ro.append(rl,' ',rt); art.appendChild(ro);
+    binds.push(l=>{ rl.textContent=UI[l].role_label+':'; rt.textContent=p.role[l]; });
+  }
+  art.appendChild(d);
   return art;
 }
 
 /* Dropdowns by project type: opening one closes the other */
-const GROUPS=[{key:'g3d',list:projects3d},{key:'ggames',list:projectsGames}];
+const GROUPS=GROUP_DEFS.map(g=>({key:g.key,list:g.slugs.map(s=>PROJECTS.find(p=>p.slug===s))}));
 function buildAccordion(host){
   const items=[];
   GROUPS.forEach((gr,i)=>{
