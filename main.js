@@ -33,11 +33,9 @@ const projects3d = [
   pos:{1:"50% 34%"},
   alt:{1:"Carl: photo of the original artwork by Haitz de Diego, an elderly man leaning over a window sill",2:"Carl: turnaround of the 3D model of the elderly man"},
   meta:{en:"3D character modeling · Based on the artwork Carl",
-        es:"Modelado 3D de personaje · Basado en la obra Carl",
-        fr:"Modélisation 3D de personnage · D'après l'œuvre Carl"},
+        es:"Modelado 3D de personaje · Basado en la obra Carl"},
   d:{en:"3D model of the elderly man from the artwork Carl by Haitz de Diego.",
-     es:"Modelo 3D del señor mayor que aparece en la obra Carl, de Haitz de Diego.",
-     fr:"Modèle 3D du vieil homme représenté dans l'œuvre Carl de Haitz de Diego."}}
+     es:"Modelo 3D del señor mayor que aparece en la obra Carl, de Haitz de Diego."}}
 ];
 const projectsGames = [
  {slug:"borealis",title:"Borealis",
@@ -60,7 +58,7 @@ const projectsGames = [
 const UI = {
  en:{
   lb_close:"Close", lb_prev:"Previous image", lb_next:"Next image", lb_open:"Enlarge image", lb_more:"more photos", lb_video:"Play video",
-  copied:"Email copied!", sfx_on:"Interface sounds: on", sfx_off:"Interface sounds: off",
+  copied:"Email copied!",
   e_title:"GAME OVER", e_msg:"This page doesn't exist or has moved.", e_cont:"CONTINUE?", e_back:"Returning to the start automatically", e_btn:"Continue",
   title_404:"Game Over | Ian Aviñó", desc_404:"Page not found.",
   title_home:"Ian Aviñó | 3D Artist & Game Developer", title_portfolio:"Portfolio: 3D Art & Game Projects | Ian Aviñó", title_about:"About Ian Aviñó | 3D Artist & Game Developer", title_contact:"Contact Ian Aviñó | 3D Artist & Game Developer",
@@ -84,7 +82,7 @@ const UI = {
  },
  es:{
   lb_close:"Cerrar", lb_prev:"Imagen anterior", lb_next:"Imagen siguiente", lb_open:"Ampliar imagen", lb_more:"fotos más", lb_video:"Reproducir vídeo",
-  copied:"¡Correo copiado!", sfx_on:"Sonidos de interfaz: activados", sfx_off:"Sonidos de interfaz: desactivados",
+  copied:"¡Correo copiado!",
   e_title:"GAME OVER", e_msg:"Esta página no existe o se ha movido.", e_cont:"¿CONTINUAR?", e_back:"Volviendo al inicio automáticamente", e_btn:"Continuar",
   title_404:"Game Over | Ian Aviñó", desc_404:"Página no encontrada.",
   title_home:"Ian Aviñó | Artista 3D y Game Developer", title_portfolio:"Portfolio: arte 3D y proyectos de videojuegos | Ian Aviñó", title_about:"Sobre Ian Aviñó | Artista 3D y Game Developer", title_contact:"Contacto con Ian Aviñó | Artista 3D y Game Developer",
@@ -237,13 +235,15 @@ function buildProject(p){
     if(it.video){
       s.classList.add('has-video');
       const v=document.createElement('video'); v.className='thumb-vid';
-      v.muted=true; v.loop=true; v.playsInline=true; v.preload='none'; v.tabIndex=-1; v.setAttribute('aria-hidden','true');
+      v.muted=true; v.loop=true; v.playsInline=true; v.preload='metadata'; v.tabIndex=-1; v.setAttribute('aria-hidden','true');
       v.addEventListener('playing',()=>v.classList.add('on'));
       v.addEventListener('error',()=>v.remove());
+      v.addEventListener('loadedmetadata',()=>{ s.classList.add('vid-ok'); setLabel(curLang); });
+      v.src=it.video;
       s.appendChild(v);
       if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver' in window){
         new IntersectionObserver(es=>es.forEach(en=>{
-          if(en.isIntersecting){ if(!v.getAttribute('src')) v.src=it.video; v.play().catch(()=>{}); } else v.pause();
+          if(en.isIntersecting){ v.play().catch(()=>{}); } else v.pause();
         }),{threshold:.35}).observe(s);
       }
       const pl=document.createElement('span'); pl.className='play'; pl.setAttribute('aria-hidden','true'); s.appendChild(pl);
@@ -255,10 +255,11 @@ function buildProject(p){
     const zb=document.createElement('button'); zb.type='button'; zb.className='zoom-btn';
     zb.addEventListener('click',()=>Lightbox.open(items,p.title,k,zb));
     s.appendChild(zb);
-    binds.push(l=>{
+    const setLabel=l=>{
       const extra=(k===2&&N>3)?', +'+(N-3)+' '+UI[l].lb_more:'';
-      zb.setAttribute('aria-label',(it.video?UI[l].lb_video:UI[l].lb_open)+': '+p.title+' ('+(k+1)+'/'+N+')'+extra);
-    });
+      zb.setAttribute('aria-label',(s.classList.contains('vid-ok')?UI[l].lb_video:UI[l].lb_open)+': '+p.title+' ('+(k+1)+'/'+N+')'+extra);
+    };
+    binds.push(setLabel);
     g.appendChild(s); slots.push(s);
   }
   const big=slots[0];
@@ -376,7 +377,7 @@ Lightbox.build();
 
 /* ===== Game-style extras =====
    loading screen (first visit of a session), scroll bar, hero parallax,
-   custom cursor, copy-email toast, interface sounds (off by default), 404 countdown */
+   custom cursor, copy-email toast, 404 countdown */
 (function(){
   const d=document.documentElement;
   const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -468,37 +469,6 @@ Lightbox.build();
     e.preventDefault();
     const addr=a.getAttribute('href').replace(/^mailto:/i,'').split('?')[0];
     copyText(addr).then(ok=>{ if(ok) toast(UI[curLang].copied); else location.href=a.href; });
-  });
-
-  /* Interface sounds: tiny synthesized blips, off by default */
-  let ctx=null,sfxOn=false;
-  try{ sfxOn=localStorage.getItem('sfx')==='1'; }catch(e){}
-  function blip(f1,f2,dur,vol){
-    const C=window.AudioContext||window.webkitAudioContext; if(!C) return;
-    if(!ctx) ctx=new C();
-    if(ctx.state==='suspended') ctx.resume();
-    const t=ctx.currentTime, o=ctx.createOscillator(), g=ctx.createGain();
-    o.type='triangle'; o.frequency.setValueAtTime(f1,t); o.frequency.exponentialRampToValueAtTime(f2,t+dur);
-    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.012); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
-    o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t+dur+0.03);
-  }
-  const sfx=document.createElement('button'); sfx.type='button'; sfx.className='sfx';
-  sfx.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path class="w" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/><path class="x" d="m16 9 5 6M21 9l-5 6"/></svg>';
-  document.body.appendChild(sfx);
-  function sfxPaint(l){
-    const u=UI[l||curLang], s=sfxOn?u.sfx_on:u.sfx_off;
-    sfx.setAttribute('aria-pressed',String(sfxOn)); sfx.setAttribute('aria-label',s); sfx.title=s;
-  }
-  binds.push(sfxPaint);
-  sfx.addEventListener('click',()=>{
-    sfxOn=!sfxOn;
-    try{ localStorage.setItem('sfx',sfxOn?'1':'0'); }catch(e){}
-    sfxPaint(); if(sfxOn) blip(440,880,.14,.05);
-  });
-  document.addEventListener('click',e=>{
-    if(!sfxOn) return;
-    const t=e.target.closest&&e.target.closest('a[href],button,.zoom-btn');
-    if(t&&!t.classList.contains('sfx')) blip(520,780,.08,.045);
   });
 
   /* 404: GAME OVER countdown back to the start page */
